@@ -1,0 +1,58 @@
+# Knapsack 0/1 Analysis:
+
+Solves the 0/1 Knapsack problem looking for max profit, given a knapsack of fixed capacity C, a list of N objects, each having a weight W(I) and profit P(I).
+
+## Needs the following to run:
+
+- g++
+- Make
+
+## File Structure:
+
+FinalProject/
+  - Makefile
+  - algorithm.h       (declares Knapsack class with algorithm)
+  - algorithm.cpp     (implements Knapsack)
+  - main.cpp          (runs input and outputs in terminal)
+  - unit_tests.cpp    (unit tests with performance output to analysis_results.csv and terminal output to results.txt)
+
+
+## Build:
+
+Build everything needed to run
+```bash
+make all
+```
+
+Build only main program for user input
+```bash
+make main
+```
+
+Build only unit test program
+```bash
+make unit_tests
+```
+
+Clean build
+```bash
+clean
+```
+
+Run main program in cmd
+```bash
+main
+```
+or in bash
+```bash
+./main
+```
+
+Run unit tests in cmd
+```bash
+unit_tests
+```
+or in bash
+```bash
+./unit_tests
+```

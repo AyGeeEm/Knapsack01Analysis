@@ -1,0 +1,13 @@
+# Compiled binaries
+*.exe
+
+# Compiled output files
+*.txt
+*.csv
+
+# Documentation files
+*.pdf
+*.docx
+
+# Hidden/Backup files
+.*~
