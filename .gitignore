@@ -9,5 +9,8 @@
 *.pdf
 *.docx
 
+# Archive files
+*.zip
+
 # Hidden/Backup files
 .*~
