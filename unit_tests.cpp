@@ -6,7 +6,6 @@
 #include <fstream>
 #include <iomanip>
 
-//In the case that unit tests are being run on a non Windows system, there's a fallback!!
 #ifdef _WIN32
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
@@ -17,6 +16,18 @@
         PROCESS_MEMORY_COUNTERS_EX pmc;
         GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
         return pmc.WorkingSetSize / 1024; // Convert bytes to KB
+    }
+#elif defined(__APPLE__) || defined(__MACH__)
+    #include <mach/mach.h>
+    
+    //Gets current memory usage in KB for macOS
+    size_t getMemoryUsage() {
+        struct task_basic_info info;
+        mach_msg_type_number_t size = TASK_BASIC_INFO_COUNT;
+        if (task_info(mach_task_self(), TASK_BASIC_INFO, (task_info_t)&info, &size) == KERN_SUCCESS) {
+            return info.resident_size / 1024;
+        }
+        return 0;
     }
 #else
     size_t getMemoryUsage() {
@@ -63,8 +74,15 @@ public:
     
     //Theoretical memory usage
     size_t getTheoreticalMemory(int n, int capacity) const {
-        //Formula considers the size of DP table (sizeof(int) * (n+1) * (capacity+1)) and the size of selected table (sizeof(bool) * (n+1) * (capacity+1))
-        return (4 * (n+1) * (capacity+1) + 1 * (n+1) * (capacity+1)) / 1024; //(Assuming int is 4 bytes and bool is 1 byte)
+        size_t n_plus_1 = static_cast<size_t>(n) + 1;
+        size_t capacity_plus_1 = static_cast<size_t>(capacity) + 1;
+        
+        // Calculate total bytes using size_t
+        size_t total_bytes = (static_cast<size_t>(4) * n_plus_1 * capacity_plus_1) + 
+                             (static_cast<size_t>(1) * n_plus_1 * capacity_plus_1);
+                             
+        size_t theoretical_kb = total_bytes / 1024;
+        return theoretical_kb;
     }
 };
 
@@ -138,7 +156,7 @@ int main() {
     ofstream resultsFile("analysis_results.csv");
     resultsFile << "Size,Capacity,Time(ms),Memory(KB),TheoreticalMemory(KB)" << endl;
     
-    vector<int> testSizes = {5, 10, 20, 50, 100, 200, 500, 1000, 1500, 2000, 3000, 5000};
+    vector<int> testSizes = {500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500};
 
     for (int size : testSizes) {
         vector<int> testWeights, testValues;

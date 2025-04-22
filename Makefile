@@ -10,4 +10,12 @@ unit_tests: unit_tests.cpp algorithm.cpp algorithm.h
 	$(CXX) $(CXXFLAGS) unit_tests.cpp algorithm.cpp -o unit_tests
 
 clean:
-	rm -f main unit_tests
+	rm -f main unit_tests analysis_results.csv
+
+dev:
+	make clean
+	make unit_tests
+	./unit_tests
+
+
+
