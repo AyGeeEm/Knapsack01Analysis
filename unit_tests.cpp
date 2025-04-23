@@ -156,7 +156,7 @@ int main() {
     ofstream resultsFile("analysis_results.csv");
     resultsFile << "Size,Capacity,Time(ms),Memory(KB),TheoreticalMemory(KB)" << endl;
     
-    vector<int> testSizes = {500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500};
+    vector<int> testSizes = {500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000};
 
     for (int size : testSizes) {
         vector<int> testWeights, testValues;
